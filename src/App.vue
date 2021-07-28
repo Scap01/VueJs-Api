@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <Users />
+    <Students />
   </div>
 </template>
 
 <script>
-import Users from './components/Users.vue'
+import Students from './components/Students.vue'
 
 export default {
   name: 'App',
   components: {
-    Users
+    Students
   }
 }
 </script>
