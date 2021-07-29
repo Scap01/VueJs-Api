@@ -2,9 +2,10 @@
 <template class="gb-light">
  <div class="container bg-light">
       <h1>students</h1>
+      <input type="text" v-model.trim="search">
     <div class="page-content page-container" id="page-content">
     <div class="padding">
-        <div class="row container d-flex justify-content-center" v-for="student in students" v-bind:key="student.id">
+        <div class="row container d-flex justify-content-center" v-for="student in students   " v-bind:key="student.id">
             <div class="col-xl-6 col-md-15">
                 <div class="card user-card-full">
                     <div class="row m-l-0 m-r-0">
@@ -29,7 +30,7 @@
                                         <p class="m-b-10 f-w-600">Average 
 
 
-                                                <span> {{hello(student)}}</span> 
+                                                <span> {{avg(student)}}%</span> 
                                             
                                         </p>
                                     
@@ -57,30 +58,37 @@ import axios from 'axios'
     export default {
         name: 'Students',
         methods:{
-            hello(value)
+            
+            avg(subItem)
             {
-                let r = ""
-                let avg = 0
-                let i = 0
-                for(;i<value.grades.lenght;i++)
-                {
-                    r = r +value.grades[i] + " " 
-                    avg += parseInt(value.grades[i])
-                    console.log(avg)
-                }
-                return (r)
+                var total = 0,
+                length = subItem.grades.length;
+
+            for (var i = 0; i < length; i++) {
+                total += parseFloat(subItem.grades[i]);
+            }
+
+            console.log(total / length)
+
+            return (total / length);
             }
         },
         data(){
             return{
                 students: null,
+                search: "",
             };
         },
-        created: function() {
+        mounted: function() {
             axios.get('https://api.hatchways.io/assessment/students')
             .then(res => {
                 this.students = res.data.students;
             })
+        },
+        computed: {
+            filterStudent: function (){
+                return (this.students.filter(student => student.firstName.includes(this.search)))
+            }
         }
         
     }
