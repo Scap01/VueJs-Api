@@ -5,7 +5,7 @@
       <input type="text" v-model.trim="search">
     <div class="page-content page-container" id="page-content">
     <div class="padding">
-        <div class="row container d-flex justify-content-center" v-for="student in students   " v-bind:key="student.id">
+        <div class="row container d-flex justify-content-center" v-for="student in filterStudent   " v-bind:key="student.id">
             <div class="col-xl-6 col-md-15">
                 <div class="card user-card-full">
                     <div class="row m-l-0 m-r-0">
@@ -68,15 +68,22 @@ import axios from 'axios'
                 total += parseFloat(subItem.grades[i]);
             }
 
+            
+
             console.log(total / length)
 
             return (total / length);
+            },
+            changeLoad(){
+                this.load = true
+                console.log("Student Loaded")
             }
         },
         data(){
             return{
                 students: null,
                 search: "",
+                load: false,
             };
         },
         mounted: function() {
@@ -87,7 +94,20 @@ import axios from 'axios'
         },
         computed: {
             filterStudent: function (){
-                return (this.students.filter(student => student.firstName.includes(this.search)))
+                if(this.load){
+                    console.log("Filter")
+                    let verify= this.students.filter(student => 
+                    student.firstName.toUpperCase().includes(this.search.toUpperCase()) 
+                    || student.lastName.toUpperCase().includes(this.search.toUpperCase()))
+
+                    return (verify)
+                }
+                else{
+                    
+                    console.log("Load All Student")
+                    this.changeLoad();
+                    return this.students;
+                }
             }
         }
         
