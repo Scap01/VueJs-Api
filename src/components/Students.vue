@@ -1,10 +1,11 @@
 
 <template class="gb-light">
  <div class="container bg-light">
-      <h1>students</h1>
-      <input type="text" v-model.trim="search">
     <div class="page-content page-container" id="page-content">
     <div class="padding">
+        <input type="search" id="form1" class="form-control" placeholder="Search by name"
+  aria-label="Search" v-model.trim="search">
+  <br />
         <div class="row container d-flex justify-content-center" v-for="student in filterStudent   " v-bind:key="student.id">
             <div class="col-xl-6 col-md-15">
                 <div class="card user-card-full">
