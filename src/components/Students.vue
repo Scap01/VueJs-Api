@@ -2,7 +2,7 @@
 <template class="gb-light">
  <div class="container bg-light">
     <div class="page-content page-container" id="page-content">
-    <div class="padding">
+    <div class="">
         <input type="search" id="form1" class="form-control" placeholder="Search by name"
   aria-label="Search" v-model.trim="search">
   <br />
@@ -18,7 +18,7 @@
                         </div>
                         <div class="col-sm-9">
                             <div class="card-block">
-                                <p class="fs-1">{{student.firstName}} {{student.lastName}}</p> <br />
+                                <p class="fs-1">{{student.firstName}} {{student.lastName}} <b-button v-on:click="clickedButton()" v-b-toggle="'collapse' + student.id" variant="secondary" class="mb-2">{{clicked}}</b-button></p> <br />
                                 <div class="row text-start">
 
                                     
@@ -36,8 +36,14 @@
                                         </p>
 
                                         <div>
-
-                                            
+                                                                                        
+                                            <b-collapse :id="'collapse'+ student.id">
+                                                <b-card>
+                                                    <p class="card-text" v-for="grade in student.grades   " v-bind:key="grade[1]">
+                                                    {{grade}}
+                                                    </p>
+                                                </b-card>
+                                            </b-collapse>
                                         </div>
                                     
                                 </div>
@@ -73,16 +79,21 @@ import axios from 'axios'
             for (var i = 0; i < length; i++) {
                 total += parseFloat(subItem.grades[i]);
             }
-
-            
-
             console.log(total / length)
 
             return (total / length);
             },
+
             changeLoad(){
                 this.load = true
                 console.log("Student Loaded")
+            },
+
+            clickedButton(){
+                if(this.clicked == '+')
+                    this.clicked = '-'
+                else
+                    this.clicked = '+'
             }
         },
         data(){
@@ -90,6 +101,7 @@ import axios from 'axios'
                 students: null,
                 search: "",
                 load: false,
+                clicked: "+",
             };
         },
         mounted: function() {

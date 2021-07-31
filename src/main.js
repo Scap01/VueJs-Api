@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
+
 import {BootstrapVue} from 'bootstrap-vue'
+import jQuery from 'jquery'
+window.$ = window.jQuery = jQuery;
+
+import 'popper.js'
 
 
 
