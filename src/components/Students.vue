@@ -34,6 +34,11 @@
                                                 <span> {{avg(student)}}%</span> 
                                             
                                         </p>
+
+                                        <div>
+
+                                            
+                                        </div>
                                     
                                 </div>
                                 <ul class="social-link list-unstyled m-t-40 m-b-10">
