@@ -45,13 +45,22 @@
                                                 </b-card>
                                             </b-collapse>
                                         </div>
+
+                                        <div class="tags-input-container">
+                                        <div class="tag" v-for="(tag, index) in tags" :key="'tag'+index+student.id">
+                                        <span v-if="activeTag !== index" @click="activeTag = index">{{ tag }}</span>
+                                        <input v-else 
+                                                v-model="tags[index]" 
+                                                v-focus 
+                                                :style="{'width': tag.length + 'ch'}" 
+                                                @keyup.enter="activeTag = null" 
+                                                @blur="activeTag = null" />
+                                        <span @click="removeTag(index)"><i class="fas fa-times-circle"></i></span>
+                                        </div>
+                                        <input v-model="tagValue" @keyup.enter="addTag">
+                                    </div>
                                     
                                 </div>
-                                <ul class="social-link list-unstyled m-t-40 m-b-10">
-                                    <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="facebook" data-abc="true"><i class="mdi mdi-facebook feather icon-facebook facebook" aria-hidden="true"></i></a></li>
-                                    <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="twitter" data-abc="true"><i class="mdi mdi-twitter feather icon-twitter twitter" aria-hidden="true"></i></a></li>
-                                    <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="instagram" data-abc="true"><i class="mdi mdi-instagram feather icon-instagram instagram" aria-hidden="true"></i></a></li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -94,7 +103,17 @@ import axios from 'axios'
                     this.clicked = '-'
                 else
                     this.clicked = '+'
-            }
+            },
+
+      addTag() {
+        if(!this.tagValue == '')
+          this.tags.push(this.tagValue);
+        
+        this.tagValue = '';
+      },
+      removeTag(index) {
+        this.tags.splice(index, 1);
+      }
         },
         data(){
             return{
@@ -102,6 +121,9 @@ import axios from 'axios'
                 search: "",
                 load: false,
                 clicked: "+",
+                tagValue: '',
+                tags: [],
+                activeTag: null
             };
         },
         mounted: function() {
@@ -118,6 +140,7 @@ import axios from 'axios'
                     student.firstName.toUpperCase().includes(this.search.toUpperCase()) 
                     || student.lastName.toUpperCase().includes(this.search.toUpperCase()))
 
+                        
                     return (verify)
                 }
                 else{
@@ -127,7 +150,17 @@ import axios from 'axios'
                     return this.students;
                 }
             }
+        },
+
+        directives: {
+      focus: {
+        inserted: (el) => {
+          el.focus()
         }
+      }
+      }
+
+        
         
     }
 
@@ -269,5 +302,7 @@ h6 {
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out
 }
+
+
 
 </style>
